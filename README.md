@@ -92,8 +92,11 @@ Replace the database connection string with your PostgreSQL credentials.
 The database is already up and running on the Supabase.
 
 #### Here is the database schema for your reference
-https://ibb.co/Dfct3WKH
-![Screenshot of Supabase DB](https://ibb.co/Dfct3WKH "DB Schema")
+
+<a href="DIRECT_IMAGE_URL" target="_blank" rel="noopener noreferrer">
+  <img src="DIRECT_IMAGE_URL" alt="Description of image" style="max-width:100%; height:auto;">
+</a>
+
 
   #### Important Note
   The storage bucket for storing the avatar is not setup at the moment as not mentioned in the documentation, so try to add users without the avatar if error is received. Due to time constraints I left it, but I will be doing it as soon I get the time, so you don't face any issues. 
