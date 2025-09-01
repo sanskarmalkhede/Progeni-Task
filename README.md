@@ -97,8 +97,8 @@ The database is already up and running on the Supabase.
 
 
 
-  #### Important Note
-  The storage bucket for storing the avatar is not setup at the moment as not mentioned in the documentation, so try to add users without the avatar if error is received. Due to time constraints I left it, but I will be doing it as soon I get the time, so you don't face any issues. 
+  #### Note
+  The avatars are stored in the storage bucket in Supabase.
 
 ### 4. Start the Development Server
 
