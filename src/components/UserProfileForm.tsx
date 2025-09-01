@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { User, UserFormData, FormErrors } from '../lib/types';
 import { Upload, User as UserIcon, X } from 'lucide-react';
+import { uploadAvatarToStorage } from '../lib/api';
 
 const UserProfileForm = ({
   user,
@@ -31,6 +32,7 @@ const UserProfileForm = ({
   const [apiError, setApiError] = useState<string>('');
   const [dragActive, setDragActive] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [avatarFile, setAvatarFile] = useState<File | null>(null);
 
   useEffect(() => {
     if (user || initialData) {
@@ -104,16 +106,17 @@ const UserProfileForm = ({
       setErrors(prev => ({ ...prev, avatar: 'Please select an image file' }));
       return;
     }
-
     if (file.size > 5 * 1024 * 1024) {
       setErrors(prev => ({ ...prev, avatar: 'Image size should be less than 5MB' }));
       return;
     }
-
+    setErrors(prev => ({ ...prev, avatar: undefined }));
+    setApiError('');
+    setAvatarFile(file);
+    // For preview
     const reader = new FileReader();
     reader.onload = (e) => {
       setFormData(prev => ({ ...prev, avatarUrl: e.target?.result as string }));
-      setErrors(prev => ({ ...prev, avatar: undefined }));
     };
     reader.readAsDataURL(file);
   };
@@ -138,12 +141,22 @@ const UserProfileForm = ({
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setApiError(''); // Clear any previous API errors
-    if (validateForm()) {
-      onSubmit(formData);
+    if (!validateForm()) return;
+    let avatarUrl = formData.avatarUrl;
+    if (avatarFile) {
+      // Use user id if editing, or email as fallback (for new user)
+      const userId = user?.id || formData.email || 'temp';
+      const uploadResult = await uploadAvatarToStorage(avatarFile, userId);
+      if (uploadResult.error) {
+        setErrors(prev => ({ ...prev, avatar: uploadResult.error }));
+        return;
+      }
+      avatarUrl = uploadResult.url || '';
     }
+    onSubmit({ ...formData, avatarUrl });
   };
 
   return (

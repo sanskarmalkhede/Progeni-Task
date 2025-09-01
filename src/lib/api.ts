@@ -394,3 +394,24 @@ class UserProfileAPI {
 }
 
 export const userAPI = new UserProfileAPI();
+
+// Upload avatar to Supabase Storage bucket 'avatars'
+export async function uploadAvatarToStorage(file: File, userId: string): Promise<{ url?: string; error?: string }> {
+  try {
+    // Use userId + timestamp for unique file name
+    const fileExt = file.name.split('.').pop();
+    const filePath = `${userId}_${Date.now()}.${fileExt}`;
+    const { data, error } = await supabase.storage.from('avatars').upload(filePath, file, {
+      cacheControl: '3600',
+      upsert: false,
+    });
+    if (error) {
+      return { error: error.message };
+    }
+    // Get public URL
+    const { data: publicUrlData } = supabase.storage.from('avatars').getPublicUrl(filePath);
+    return { url: publicUrlData.publicUrl };
+  } catch (e: any) {
+    return { error: e.message || 'Unknown error uploading avatar' };
+  }
+}
