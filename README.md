@@ -93,9 +93,8 @@ The database is already up and running on the Supabase.
 
 #### Here is the database schema for your reference
 
-<a href="DIRECT_IMAGE_URL" target="_blank" rel="noopener noreferrer">
-  <img src="DIRECT_IMAGE_URL" alt="Description of image" style="max-width:100%; height:auto;">
-</a>
+<a href="https://ibb.co/Dfct3WKH"><img src="https://i.ibb.co/zV9rKxfT/supabase-schema-xselwsbthtrqhvinfivd.png" alt="supabase-schema-xselwsbthtrqhvinfivd" border="0" /></a>
+
 
 
   #### Important Note
